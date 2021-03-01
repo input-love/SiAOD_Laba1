@@ -2,10 +2,10 @@
 
 List::~List()
 {
-    if (_head != nullptr)
+    if (!_head)
     {
         Node* currentElement = _head;
-        for (int i = 0; i < _count - 1; i++)
+        for (int i = 0; i < _count; i++)
         {
             currentElement = currentElement->_next;
             delete currentElement->_prev;
@@ -15,72 +15,87 @@ List::~List()
 }
 
 void List::push_front(int data) {
-    if (_head != nullptr)
+    if (!_count)
     {
-        _head = _head->_prev = new Node();
-        _head->data = data;
+        create_first_node(data);
     }
     else
     {
-        create_first_node(data);
+        _head->_prev = new Node();
+        _head->_prev->_next = _head;
+        _head = _head->_prev;
+        _head->data = data;
     }
     _count++;
 }
 
 void List::push_back(int data) {
-    if (_tail != nullptr)
+    if (!_count)
     {
-        _tail = _tail->_next = new Node();
-        _tail->data = data;
+        create_first_node(data);
     }
     else
     {
-        create_first_node(data);
+        _tail->_next->_prev = _tail;
+        _tail = _tail->_next;
+        _tail->data = data;
+        _tail->_next = new Node();
     }
     _count++;
 }
 
 void List::pop_front()
 {
-    if (_head != nullptr && _count > 1)
+    if (_count > 1)
     {
         _head = _head->_next;
         delete _head->_prev;
+        _count--;
     }
     else if (_count)
     {
-        delete _head;
+        _tail = _head = _head->_next;
+        delete _head->_prev;
+        _count--;
     }
 }
 
 void List::pop_back()
 {
-    if (_tail != nullptr && _count > 1)
+    if (_count > 1)
     {
+        Node* temp = _tail->_next;
         _tail = _tail->_prev;
         delete _tail->_next;
+        _tail->_next = temp;
+        _count--;
     }
     else if (_count)
     {
-        delete _tail;
+        _tail = _head = _tail->_next;
+        delete _tail->_prev;
+        _count--;
     }
 }
 
-const List::iterator& List::begin() const
+List::iterator List::begin()
 {
     return iterator(_head);
 }
 
-const List::iterator& List::end() const
+List::iterator List::end()
 {
-    return iterator(_tail);
+    return iterator(_tail->_next);
 }
 
 void List::create_first_node(int data)
 {
-    _head = _tail = new Node();
+    _head->_next = new Node();
+    _head->_next->_prev = _head;
     _head->data = data;
 }
+
+// Определение класса "iterator"
 
 List::iterator::iterator(Node* node)
 {
@@ -132,5 +147,5 @@ const List::iterator& List::iterator::operator--(int)
 
 bool List::iterator::operator!=(const iterator& itr)
 {
-    return this == &itr;
+    return this->_currentElement != itr._currentElement;
 }

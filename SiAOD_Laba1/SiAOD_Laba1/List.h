@@ -15,8 +15,8 @@ public:
     public:
         iterator() = default;
         iterator(Node* node);
-        ~iterator() = default;
         iterator(const iterator& itr);
+        ~iterator() = default;
         const iterator& operator=(const iterator& itr);
         int operator*() const;
         const iterator& operator++();
@@ -28,8 +28,8 @@ public:
         friend class List;
         Node* _currentElement = nullptr;
     };
-    const iterator& begin() const;
-    const iterator& end() const;
+    iterator begin();
+    iterator end();
 private:
     void create_first_node(int data);
     struct Node {
@@ -38,6 +38,6 @@ private:
         Node* _prev = nullptr;
     };
     int _count = 0;
-    Node* _head = nullptr;
-    Node* _tail = nullptr;
+    Node* _head = new Node();
+    Node* _tail = _head;
 };
