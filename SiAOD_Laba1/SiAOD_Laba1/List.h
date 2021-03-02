@@ -3,6 +3,7 @@
 class List {
 private:
     struct Node;
+    class iterator;
 public:
     List() = default;
     ~List();
@@ -10,6 +11,8 @@ public:
     void push_back(int data);
     void pop_front();
     void pop_back();
+    void insert(const iterator& itr, int data);
+    void swap();
     class iterator
     {
     public:
@@ -23,7 +26,8 @@ public:
         const iterator& operator++(int);
         const iterator& operator--();
         const iterator& operator--(int);
-        bool operator!=(const iterator& itr);
+        bool operator==(const iterator& itr) const;
+        bool operator!=(const iterator& itr) const;
     private:
         friend class List;
         Node* _currentElement = nullptr;
@@ -33,11 +37,12 @@ public:
 private:
     void create_first_node(int data);
     struct Node {
-        int data;
+        int _data;
         Node* _next = nullptr;
         Node* _prev = nullptr;
     };
     int _count = 0;
-    Node* _head = new Node();
-    Node* _tail = _head;
+    Node* _default_node = new Node();
+    Node* _head = _default_node;
+    Node* _tail = nullptr;
 };

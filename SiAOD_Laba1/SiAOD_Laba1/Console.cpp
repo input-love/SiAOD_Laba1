@@ -27,10 +27,10 @@ void Console::start()
 			dialog_print_list();
 			break;
 		case 6:
-			// Доделать
+			dialog_insert();
 			break;
 		case 7:
-			// Доделать
+			dialog_swap();
 			break;
 		default:
 			operation = false;
@@ -73,6 +73,27 @@ void Console::dialog_print_list()
 	{
 		std::cout << " | " << i << " | " << std::endl;
 	}
+}
+
+void Console::dialog_insert()
+{
+	std::cout << "Введите место куда добавить число: ";
+	int count = dialog_cin_data();
+
+	std::cout << "Введите число для добавления: ";
+	int data = dialog_cin_data();
+
+	auto it = _list.begin();
+	for (int i = 0; i < count - 1; i++)
+	{
+		it++;
+	}
+	_list.insert(it, data);
+}
+
+void Console::dialog_swap()
+{
+	_list.swap();
 }
 
 void Console::print_menu() const

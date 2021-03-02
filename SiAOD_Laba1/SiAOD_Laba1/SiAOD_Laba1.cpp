@@ -1,4 +1,5 @@
 ﻿/* Самардак А.В - СиАОД Лаба 1*/
+#include <vld.h>
 #include "Console.h"
 
 int main()
