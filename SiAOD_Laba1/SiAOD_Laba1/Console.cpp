@@ -7,7 +7,7 @@ void Console::start()
 	{
 		print_menu();
 
-		int check = dialog_cin_data();
+		int check = dialog_get_data();
 
 		switch (check)
 		{
@@ -32,13 +32,13 @@ void Console::start()
 		case 7:
 			dialog_swap();
 			break;
-		default:
+		case 8:
 			operation = false;
 		}
 	}
 }
 
-int Console::dialog_cin_data()
+int Console::dialog_get_data()
 {
 	int data;
 	std::cin >> data;
@@ -48,13 +48,13 @@ int Console::dialog_cin_data()
 void Console::dialog_push_front() 
 {
 	std::cout << "¬ведите число дл€ добавлени€ в голову: ";
-	_list.push_front(dialog_cin_data());
+	_list.push_front(dialog_get_data());
 }
 
 void Console::dialog_push_back() 
 {
 	std::cout << "¬ведите число дл€ добавлени€ в хвост: ";
-	_list.push_back(dialog_cin_data());
+	_list.push_back(dialog_get_data());
 }
 
 void Console::dialog_pop_front() 
@@ -69,26 +69,33 @@ void Console::dialog_pop_back()
 
 void Console::dialog_print_list()
 {
-	for (auto i : _list)
+	for (auto itr = _list.begin(); itr != _list.end(); itr++)
 	{
-		std::cout << " | " << i << " | " << std::endl;
+		std::cout << " | " << *itr << " | " << std::endl;
 	}
 }
 
 void Console::dialog_insert()
 {
 	std::cout << "¬ведите место куда добавить число: ";
-	int count = dialog_cin_data();
+	int count = dialog_get_data();
 
 	std::cout << "¬ведите число дл€ добавлени€: ";
-	int data = dialog_cin_data();
+	int data = dialog_get_data();
 
-	auto it = _list.begin();
-	for (int i = 0; i < count - 1; i++)
+	try
 	{
-		it++;
+		auto it = _list.begin();
+		for (int i = 0; i < count - 1; i++)
+		{
+			it++;
+		}
+		_list.insert(it, data);
 	}
-	_list.insert(it, data);
+	catch (const std::exception& ex)
+	{
+		std::cout << ex.what() << std::endl;
+	}
 }
 
 void Console::dialog_swap()

@@ -1,4 +1,5 @@
 #pragma once
+#include <iostream>
 
 class List {
 private:
@@ -24,8 +25,6 @@ public:
         int operator*() const;
         const iterator& operator++();
         const iterator& operator++(int);
-        const iterator& operator--();
-        const iterator& operator--(int);
         bool operator==(const iterator& itr) const;
         bool operator!=(const iterator& itr) const;
     private:

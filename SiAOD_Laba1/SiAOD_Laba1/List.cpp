@@ -123,20 +123,14 @@ void List::swap()
     }
     else if (_count == 2)
     {
-        Node* temp = _head->_next;
-
         _head->_next = _default_node;
-        _head->_prev = temp;
+        _head->_prev = _tail;
 
-        _tail->_next = temp;
+        _tail->_next = _head;
         _tail->_prev = nullptr;
 
-        temp->_prev = _tail;
-        temp->_next = _head;
-
-        Node* temp_swap = _head;
         _head = _tail;
-        _tail = temp;
+        _tail = _tail->_next;
     }
 }
 
@@ -184,28 +178,29 @@ int List::iterator::operator*() const
 
 const List::iterator& List::iterator::operator++()
 {
-    _currentElement = _currentElement->_next;
-    return *this;
+    if (_currentElement->_next)
+    {
+        _currentElement = _currentElement->_next;
+        return *this;
+    }
+    else
+    {
+        throw std::exception("---Ќельз€ сделать смещение на такое рассто€ние!---");
+    }
 }
 
 const List::iterator& List::iterator::operator++(int)
 {
-    List::iterator temp = *this;
-    _currentElement = _currentElement->_next;
-    return temp;
-}
-
-const List::iterator& List::iterator::operator--()
-{
-    _currentElement = _currentElement->_prev;
-    return *this;
-}
-
-const List::iterator& List::iterator::operator--(int)
-{
-    List::iterator temp = *this;
-    _currentElement = _currentElement->_prev;
-    return temp;
+    if (_currentElement->_next)
+    {
+        List::iterator temp = *this;
+        _currentElement = _currentElement->_next;
+        return temp;
+    }
+    else
+    {
+        throw std::exception("---Ќельз€ сделать смещение на такое рассто€ние!---");
+    }
 }
 
 bool List::iterator::operator==(const iterator& itr) const
